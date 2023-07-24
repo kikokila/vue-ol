@@ -1,25 +1,78 @@
 <template>
   <div>
-    <p>{{ count }}</p>
-    <button @click="count++">+1（ref示例）</button>
-  </div>
-  <div>
-    <p>{{ person }}</p>
-    <button @click="changeAge">修改深层属性年龄（shallowRef深层响应示例,修改失败）</button>
-    <br>
-    <button @click="changePerson">修改浅层ref-Person（shallowRef浅层响应示例）</button>
+    <input placeholder="请输入名称" v-model="keyword" type="text">
+    <table style="margin-top: 10px;" width="500" cellspacing="0" cellpadding="0" border>
+      <thead>
+        <tr>
+          <th>物品</th>
+          <th>单价</th>
+          <th>数量</th>
+          <th>总价</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in searchData">
+          <td align="center">{{ item.name }}</td>
+          <td align="center">{{ item.price }}</td>
+          <td align="center">
+            <button @click="item.num > 1 ? item.num-- : null">-</button>
+            <input v-model="item.num" type="number">
+            <button @click="item.num < 99 ? item.num++ : null">+</button>
+          </td>
+          <td align="center">{{ item.num * item.price }}</td>
+          <td align="center">
+            <button @click="del(index)">删除</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" align="right">
+            <span>总价：{{ total }}</span>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, shallowRef } from 'vue'
-const count = ref(0)
-const person = shallowRef({ age: 18, name: '小李' })
-const changeAge = () => {
-  person.value.age = 19
+import { ref, reactive, computed } from 'vue'
+import WelcomeItem from './components/WelcomeItem.vue';
+let keyword = ref<string>('')
+interface Data {
+  name: string,
+  price: number,
+  num: number
 }
-const changePerson = () => {
-  person.value = { name: '浅层修改', age: 20 }
+const data = reactive<Data[]>([
+  {
+    name: '帽子',
+    price: 20,
+    num: 1
+  },
+  {
+    name: '衣服',
+    price: 50,
+    num: 1
+  },
+  {
+    name: '鞋子',
+    price: 100,
+    num: 1
+  }
+])
+let searchData = computed(() => {
+  return data.filter(item => item.name.includes(keyword.value))
+})
+let total = computed(() => {
+  return searchData.value.reduce((prev: number, next: Data) => {
+    return prev + next.num * next.price
+  }, 0)
+})
+let del = (index: number) => {
+  data.splice(index, 1)
 }
 
 </script>
