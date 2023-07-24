@@ -1,33 +1,25 @@
 <template>
   <div>
-    <button @click="count++">{{ count }}</button>
+    <p>{{ count }}</p>
+    <button @click="count++">+1（ref示例）</button>
   </div>
   <div>
-    <p>使用文本插值{{ rawHtml }}</p>
-    <p>使用v-html指令:<span v-html="rawHtml"></span></p>
-  </div>
-  <div>
-    <button :disabled=flag>按钮</button>
-    <button @click="changeDisabled">点击改变左侧按钮状态</button>
-  </div>
-  <div>
-    <a href="https://www.example.com" @click.prevent>
-      进入网站（使用 .prevent 事件修饰符来阻止 a 元素的默认点击行为导致页面跳转）
-    </a>
-    <hr>
-    <a href="https://www.example.com">
-      进入网站（未使用 .prevent 事件修饰符,可以跳转）
-    </a>
+    <p>{{ person }}</p>
+    <button @click="changeAge">修改深层属性年龄（shallowRef深层响应示例,修改失败）</button>
+    <br>
+    <button @click="changePerson">修改浅层ref-Person（shallowRef浅层响应示例）</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-var count = ref(1)
-var rawHtml = '<span style="color: red;">红色</span>'
-var flag = ref(false)
-var changeDisabled = () => {
-  flag.value = !flag.value
+import { ref, reactive, shallowRef } from 'vue'
+const count = ref(0)
+const person = shallowRef({ age: 18, name: '小李' })
+const changeAge = () => {
+  person.value.age = 19
+}
+const changePerson = () => {
+  person.value = { name: '浅层修改', age: 20 }
 }
 
 </script>
