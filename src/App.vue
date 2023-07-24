@@ -1,82 +1,60 @@
 <template>
   <div>
-    <input placeholder="请输入名称" v-model="keyword" type="text">
-    <table style="margin-top: 10px;" width="500" cellspacing="0" cellpadding="0" border>
-      <thead>
-        <tr>
-          <th>物品</th>
-          <th>单价</th>
-          <th>数量</th>
-          <th>总价</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in searchData">
-          <td align="center">{{ item.name }}</td>
-          <td align="center">{{ item.price }}</td>
-          <td align="center">
-            <button @click="item.num > 1 ? item.num-- : null">-</button>
-            <input v-model="item.num" type="number">
-            <button @click="item.num < 99 ? item.num++ : null">+</button>
-          </td>
-          <td align="center">{{ item.num * item.price }}</td>
-          <td align="center">
-            <button @click="del(index)">删除</button>
-          </td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="5" align="right">
-            <span>总价：{{ total }}</span>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+    <!-- 第一种：放置字符串 -->
+    <div class="active">hello</div>
+
+    <!-- 第二种：放置对象 -->
+    <!-- 语法结构为： <p :class="{类名：boolean}">hello1</p> -->
+    <!--写法一：用true和false来决定是否使用这个属性-->
+    <p :class="{ active: true }">hello1</p>
+
+    <!-- 写法二：给“isActive赋值” -->
+    <p :class="{ active: isActive }">hello2</p>
+    <!-- 当有多个类名时，用逗号隔开 -->
+    <p :class="{ active: isActive, helloWorld: isActive }">hello3</p>
+    <!-- 下面写一个按钮，取反，可以直观地观察数据前后变化 -->
+    <button @click="isActive = !isActive">改变active</button>
+    <!-- 当有多个class时，不会被覆盖掉(和普通的类同时存在，不会起冲突) -->
+    <p :class="{ active: isActive }" class="helloWorld">hello4</p>
+
+    <!-- 写法三：绑定的对象并不一定需要写成内联字面量的形式，也可以直接绑定一个对象 -->
+    <p :class="classObj">hello5</p>
+
+    <!-- 写法四：使用computed -->
+    <p :class="classObjCom">hello-computed</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-import WelcomeItem from './components/WelcomeItem.vue';
-let keyword = ref<string>('')
-interface Data {
-  name: string,
-  price: number,
-  num: number
-}
-const data = reactive<Data[]>([
-  {
-    name: '帽子',
-    price: 20,
-    num: 1
-  },
-  {
-    name: '衣服',
-    price: 50,
-    num: 1
-  },
-  {
-    name: '鞋子',
-    price: 100,
-    num: 1
+var message = ref('helloWorld')
+var isActive = ref(true)
+var error = ref(null)
+var classObj = ref({
+  active: true,
+  helloWorld: true,
+})
+var classObjCom = computed(() => {
+  return {
+    // 只有当这两个条件同时成立的时候，才会显示active
+    active: isActive && !error,
+    helloWorld: error
+    // 这里只会显示active的样式，
+    //当data中error返回值不为null的时候，才会显示helloWorld的样式，而不显示active的样式
   }
-])
-let searchData = computed(() => {
-  return data.filter(item => item.name.includes(keyword.value))
+
 })
-let total = computed(() => {
-  return searchData.value.reduce((prev: number, next: Data) => {
-    return prev + next.num * next.price
-  }, 0)
-})
-let del = (index: number) => {
-  data.splice(index, 1)
-}
 
 </script>
 
 
 
-<style scoped></style>
+<style scoped>
+.active {
+  font-size: 50px;
+}
+
+.helloWorld {
+  background-color: pink;
+}
+</style>
