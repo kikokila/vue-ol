@@ -1,44 +1,15 @@
 <template>
-  <div>
-    <p>Message is: {{ message }}</p>
-    <input v-model="message" placeholder="edit me" />
-    <br>
-    <span>Multiline message is:</span>
-    <p style="white-space: pre-line;">{{ message2 }}</p>
-    <textarea v-model="message2" placeholder="add multiple lines"></textarea>
-    <br>
-    <input type="checkbox" id="checkbox" v-model="checked" />
-    <label for="checkbox">{{ checked }}</label>
-  </div>
+  <h1>我是父组件</h1>
   <br>
-  <div>Checked names: {{ checkedNames }}</div>
-  <br>
-  <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
-  <label for="jack">Jack</label>
-
-  <input type="checkbox" id="john" value="John" v-model="checkedNames">
-  <label for="john">John</label>
-
-  <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
-  <label for="mike">Mike</label>
-
-  <div>Selected: {{ selected }}</div>
-  <br>
-  <select v-model="selected">
-    <option disabled value="">Please select one</option>
-    <option>A</option>
-    <option>B</option>
-    <option>C</option>
-  </select>
+  <A v-if="flag"></A>
+  <button @click="flag=!flag">创建/销毁</button>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-const message = ref('')
-const message2 = ref('')
-const checked = ref(true)
-const checkedNames = ref([])
-const selected = ref('')
+import A from './components/TodoItem.vue'
+console.log('父组件setup')
+const flag=ref(false)
 </script>
 
 
