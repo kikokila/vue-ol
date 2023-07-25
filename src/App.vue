@@ -1,29 +1,17 @@
 <template>
-  <ul>
-    <li>x的值为:{{ x }}</li>
-    <li>y的值为:{{ y }}</li>
-    <li>x+y的值为:{{ x + y }}</li>
-  </ul>
-  <br>
-  <button @click="x++">x值+1</button>
-  <button @click="y++">y值+1</button>
+  <Child ref="child"></Child>
+  <button @click="child?.setB">修改子组件的b</button>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, watchEffect } from 'vue'
-const x = ref(1)
-const y = ref(1)
-watch(x, (newVal) => {
-  console.log('(watch函数)x值改变为' + newVal)
+import { ref, reactive, computed, watch, watchEffect, onMounted } from 'vue'
+import Child from './components/TodoItem.vue'
+const child = ref<InstanceType<typeof Child> | null>(null)
+onMounted(()=>{
+  alert(child.value?.a)
+  
 })
-watchEffect(() => {
-  if (x.value) {
-    console.log('(watchEffect函数)x值改变为' + x.value)
-  }
-  if (y.value) {
-    console.log('(watchEffect函数)y值改变为' + y.value)
-  }
-})
+
 
 </script>
 
