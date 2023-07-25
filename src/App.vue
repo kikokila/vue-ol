@@ -1,15 +1,30 @@
 <template>
-  <h1>我是父组件</h1>
+  <ul>
+    <li>x的值为:{{ x }}</li>
+    <li>y的值为:{{ y }}</li>
+    <li>x+y的值为:{{ x + y }}</li>
+  </ul>
   <br>
-  <A v-if="flag"></A>
-  <button @click="flag=!flag">创建/销毁</button>
+  <button @click="x++">x值+1</button>
+  <button @click="y++">y值+1</button>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import A from './components/TodoItem.vue'
-console.log('父组件setup')
-const flag=ref(false)
+import { ref, reactive, computed, watch, watchEffect } from 'vue'
+const x = ref(1)
+const y = ref(1)
+watch(x, (newVal) => {
+  console.log('(watch函数)x值改变为' + newVal)
+})
+watchEffect(() => {
+  if (x.value) {
+    console.log('(watchEffect函数)x值改变为' + x.value)
+  }
+  if (y.value) {
+    console.log('(watchEffect函数)y值改变为' + y.value)
+  }
+})
+
 </script>
 
 
