@@ -1,57 +1,44 @@
 <template>
   <div>
-    <input type="text" v-model.trim="uname">
-    过滤输入的首空格字符：{{ uname }}
-  </div>
-  <br>
-  <div class="father" @click="fatherClick">
-    <a herf="http:www.baidu.com" @click.stop>百度(加了.stop)</a>
+    <p>Message is: {{ message }}</p>
+    <input v-model="message" placeholder="edit me" />
     <br>
-    <a herf="http:www.baidu.com">百度2(未加.stop)</a>
+    <span>Multiline message is:</span>
+    <p style="white-space: pre-line;">{{ message2 }}</p>
+    <textarea v-model="message2" placeholder="add multiple lines"></textarea>
+    <br>
+    <input type="checkbox" id="checkbox" v-model="checked" />
+    <label for="checkbox">{{ checked }}</label>
   </div>
   <br>
-  <div @click.capture="one">
-    obj1(加了.capture)
-    <div @click.capture="two">
-      obj2(加了.capture)
-      <div @click="three">
-        obj3(未加.capture)
-        <div @click="four">
-          obj4(未加.capture)
-        </div>
-      </div>
-    </div>
-  </div>
+  <div>Checked names: {{ checkedNames }}</div>
   <br>
-  <div>
-    <button @click.left="getClick">点左键触发</button>
-    <button @click.middle="getClick">点中键触发</button>
-    <button @click.right="getClick">点右键触发</button>
-  </div>
+  <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+  <label for="jack">Jack</label>
+
+  <input type="checkbox" id="john" value="John" v-model="checkedNames">
+  <label for="john">John</label>
+
+  <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+  <label for="mike">Mike</label>
+
+  <div>Selected: {{ selected }}</div>
+  <br>
+  <select v-model="selected">
+    <option disabled value="">Please select one</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+  </select>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
-const uname = ref('')
-const fatherClick = () => {
-  alert('.stop阻止冒泡')
-}
-const one = () => {
-  alert('one')
-}
-const two = () => {
-  alert('two')
-}
-const three = () => {
-  alert('three')
-}
-const four = () => {
-  alert('four')
-}
-const getClick = () => {
-  alert('触发成功')
-}
-
+const message = ref('')
+const message2 = ref('')
+const checked = ref(true)
+const checkedNames = ref([])
+const selected = ref('')
 </script>
 
 
